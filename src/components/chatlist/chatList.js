@@ -3,10 +3,9 @@ import "./chatList.css";
 import { useState, useEffect } from "react";
 import ChatListItems from "./chatListItem";
 import axios from "axios";
-import SelectRoom from "../select/select";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 const ChatList = (props) => {
-  const roomName = [
+  const room = [
     {
       id: 1,
       roomName: 'Room 1'
@@ -64,13 +63,13 @@ const ChatList = (props) => {
         <h2>Rooms</h2>
       </div>
       <ReactSearchAutocomplete
-            items={roomName}
+            items={room}
             onSearch={handleOnSearch}
             onSelect={handleOnSelect}
             formatResult={formatResult}
           />
       <div className="chatlist__items">
-        <ChatListItems room={props.roomName} />
+        <ChatListItems room={props.room} />
       </div>
     </div>
   );

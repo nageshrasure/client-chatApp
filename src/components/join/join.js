@@ -1,58 +1,73 @@
 import React, { Component } from "react";
+import "./join.css";
 import axios from "axios";
 
-import "./join.css";
-import SelectRoom from "../select/select";
 
 class Join extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      selectOptions : [],
+      userName: "",
+      selectOptions: [],
       id: "",
-      room: ''
-    }
+      room: "",
+    };
+    this.handleRoomChange = this.handleRoomChange.bind(this);
   }
-  async getOptions(){
-    const res = await axios.get('https://uber-chat.herokuapp.com/rooms')
+
+  async getOptions() {
+    const res = await axios.get("https://uber-chat.herokuapp.com/rooms");
     const data = res.data.data;
-    const options = data.map(item => ({
-      "value" : item.id,
-      "label" : item.roomName
-    }))
-    this.setState({
-      selectOptions: options
-    })
-  }
-  handleChange(e){
-   this.setState({id:e.value, room:e.label})
+
+    const options = data.map((d) => ({
+      value: d._id,
+      label: d.roomName,
+    }));
+
+    this.setState({ selectOptions: options });
   }
 
-  componentDidMount(){
-      this.getOptions()
+  handleRoomChange(e) {
+    const room = this.state.selectOptions.find(
+      (item) => item.value === e.target.value
+    );
+    this.setState({ id: room.value, room: room.label }, () => {
+      console.log(this.state);
+    });
   }
 
-  state = {
-    name: "",
-    room: "",
-  };
-  handleChangeName = (e) => {
-    this.setState({ name: e.target.value });
-  };
-  handleRoomChange = (e) => {
-    this.setState({ room: e.target.value });
-  };
-  
-  clickHandler = () => {
-    let path = "/chat";
-    this.props.history.push(path);
-    const { name, room } = this.state;
-    localStorage.setItem("name", name);
-    localStorage.setItem("room", room);
+  componentDidMount() {
+    this.getOptions();
+  }
+
+  handleChangeName = (event) => {
+    this.setState({ userName: event.target.value });
   };
 
+  clickHandler = async (event) => {
+    event.preventDefault();
+    console.log(this.state);
+    const { userName, room } = this.state;
+    if(userName === ""){
+      alert("Name is required.");
+      return event.preventDefault();
+    }else{
+      let path = "/chat";
+      this.props.history.push(path);
+    }
+    await axios
+     .post("https://uber-chat.herokuapp.com/rooms/enterroom", this.state)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  //   
+  };
   render() {
-    console.log(this.state)
+    console.log(this.state.selectOptions);
+    const { userName, roomId } = this.state;
     return (
       <div className="joinOuterContainer">
         <div className="joinInnerContainer">
@@ -62,18 +77,24 @@ class Join extends Component {
             <input
               placeholder="Name"
               onChange={this.handleChangeName}
-              value={this.state.name}
+              value={userName}
               className="joinInput"
               type="text"
-            /> 
-            {/* <select value={this.state.selectOptions} onChange={this.handleChange}>
-            {options.map((option) => (
-              <option value={option.value}>{option.label}</option>
-            ))}
-          </select>  */}
-          <SelectRoom/>
-          
-            </div>
+            />
+          </div>
+          <div>
+            <select
+              className="joinInput mt-20"
+              options={this.state.selectOptions}
+              onChange={this.handleRoomChange}
+            >
+              {this.state.selectOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </div>
+        
+
           <button
             className={"button mt-20"}
             onClick={this.clickHandler}
@@ -84,8 +105,6 @@ class Join extends Component {
         </div>
       </div>
     );
-    
   }
 }
-
 export default Join;

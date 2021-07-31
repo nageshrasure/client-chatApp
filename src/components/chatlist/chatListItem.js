@@ -1,6 +1,5 @@
 import React from "react";
 import Avatar from "./Avatar";
-import SelectRoom from "../select/select";
 
 const ChatListItems = (props) => {
   return (
@@ -8,8 +7,8 @@ const ChatListItems = (props) => {
       className="userMeta chatlist__item "
       style={{ animationDelay: `0.${props.animationDelay}s` }}
     >
-      <Avatar roomName={props.roomName} />
-      <p>{props.roomName}</p>
+      <Avatar room={props.room} />
+      <p>{props.room}</p>
     </div>
   );
 };

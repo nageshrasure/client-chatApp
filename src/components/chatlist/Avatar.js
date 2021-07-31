@@ -1,6 +1,6 @@
 import React from "react";
 import LetteredAvatar from "react-lettered-avatar";
-import SelectRoom from "../select/select";
+
 
 const Avatar = (props) => {
   return (
