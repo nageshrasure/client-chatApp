@@ -2,6 +2,7 @@
   flex-grow: 1;
   padding: 20px 20px;
   max-width: 75%;
+  height: 100vh;
   border-right: 3px solid #ebe7fb;
 }
 .content__header {
@@ -69,7 +70,11 @@
   padding: 15px;
   border-radius: 10px 10px 0 10px;
   max-width: 50%;
-  min-width: 215px;
+  height: 70px;
+  z-index: 9999;
+  overflow: hidden;
+  margin-bottom: 10px;
+  font-stretch: expanded;
 }
 .chat__item__content .chat__meta {
   justify-content: space-between;
@@ -83,6 +88,9 @@
 }
 .chat__msg {
   user-select: none;
+  text-align: left;
+  position: relative;
+  bottom: 8px;
 }
 
 .chat__item.other {
@@ -147,10 +155,9 @@
 .messageBox {
   background: #f3f3f3;
   border-radius: 20px;
-  padding: 5px 20px;
+  padding: 0 20px;
   color: white;
   display: inline-block;
-  max-width: 80%;
 }
 
 .messageText {

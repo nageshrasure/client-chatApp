@@ -39,9 +39,6 @@ body {
   padding-bottom: 10px;
   border-bottom: 2px solid white;
 }
-select option{
-  margin-top: 50px;
-}
 
 .button {
   color: #fff !important;

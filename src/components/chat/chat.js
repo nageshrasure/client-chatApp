@@ -6,8 +6,9 @@ import ChatBody from "./../chatBody/chatBody";
 class Chat extends Component {
   constructor(props) {
     super(props);
-    let name = localStorage.getItem("name");
-    let room = localStorage.getItem("room");
+    const user = JSON.parse(localStorage.getItem("user"));
+    let name = user.user.userName;
+    let room = user.roomName;
     this.state = {
       name: name,
       room: room,

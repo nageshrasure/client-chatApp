@@ -1,13 +1,26 @@
 import React from "react";
-import { useHistory } from "react-router";
+import axios from "axios";
 import "./userProfile.css";
 import LetteredAvatar from "react-lettered-avatar";
+//import { useHistory } from "react-router";
 
 const UserProfile = (props) => {
-  const history = useHistory("");
-  const routeHandle = () => {
-    let path = "/";
-    history.push(path);
+  const routeHandle = async (event) => {
+    event.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    let userId = user.user._id;
+    await axios
+      .delete("https://chat-uber.herokuapp.com/rooms/" + userId, {
+        userId: { userId },
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.success) {
+          localStorage.clear();
+          window.location.href = "/";
+        }
+      });
+    // let path = "/";
+    // history.push(path);
   };
   return (
     <div className="main__userprofile">

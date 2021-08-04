@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./join.css";
 import axios from "axios";
 
-
 class Join extends Component {
   constructor(props) {
     super(props);
@@ -16,24 +15,23 @@ class Join extends Component {
   }
 
   async getOptions() {
-    const res = await axios.get("https://uber-chat.herokuapp.com/rooms");
+    const res = await axios.get("https://chat-uber.herokuapp.com/rooms");
     const data = res.data.data;
 
-    const options = data.map((d) => ({
-      value: d._id,
-      label: d.roomName,
-    }));
-
-    this.setState({ selectOptions: options });
+    if (data) {
+      const options = data.map((d) => ({
+        value: d._id,
+        label: d.roomName,
+      }));
+      this.setState({ selectOptions: options, room: options[0].value });
+    }
   }
 
   handleRoomChange(e) {
     const room = this.state.selectOptions.find(
       (item) => item.value === e.target.value
     );
-    this.setState({ id: room.value, room: room.label }, () => {
-      console.log(this.state);
-    });
+    this.setState({ id: room.value, room: room.label });
   }
 
   componentDidMount() {
@@ -46,33 +44,33 @@ class Join extends Component {
 
   clickHandler = async (event) => {
     event.preventDefault();
-    console.log(this.state);
-    const { userName, room } = this.state;
-    if(userName === ""){
+    const { userName } = this.state;
+    if (userName === "") {
       alert("Name is required.");
       return event.preventDefault();
-    }else{
-      let path = "/chat";
-      this.props.history.push(path);
+    } else {
+      await axios
+        .post("https://chat-uber.herokuapp.com/rooms/enterroom", {
+          userName: this.state.userName,
+          roomId: this.state.room,
+        })
+        .then((response) => {
+          if (response.status === 200 && response.data.success) {
+            localStorage.setItem("user", JSON.stringify(response.data.data));
+            this.props.history.push("/chat");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    await axios
-     .post("https://uber-chat.herokuapp.com/rooms/enterroom", this.state)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  //   
   };
   render() {
-    console.log(this.state.selectOptions);
-    const { userName, roomId } = this.state;
+    const { userName } = this.state;
     return (
       <div className="joinOuterContainer">
         <div className="joinInnerContainer">
           <h1 className="heading">Join</h1>
-
           <div>
             <input
               placeholder="Name"
@@ -89,11 +87,12 @@ class Join extends Component {
               onChange={this.handleRoomChange}
             >
               {this.state.selectOptions.map((option) => (
-                <option value={option.value}>{option.label}</option>
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </select>
           </div>
-        
 
           <button
             className={"button mt-20"}

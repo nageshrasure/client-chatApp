@@ -1,6 +1,5 @@
 .main__userprofile {
-  width: 20%;
-
+  width: auto;
   padding: 0 20px 0 40px;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
@@ -8,6 +7,7 @@
 }
 .profile__card {
   background-color: #fff;
+  
   border-radius: 10px;
   display: flex;
   justify-content: center;
