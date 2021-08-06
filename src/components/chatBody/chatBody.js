@@ -4,6 +4,7 @@ import ChatList from "./../chatlist/chatList";
 import ChatContent from "./../chatContent/chatContent";
 import "./../chatContent/chatContent.css";
 import "./chatBody.css";
+import moment from "moment";
 
 import axios from "axios";
 
@@ -26,7 +27,7 @@ const ChatBody = (props) => {
                   <div key={index}>
                     <div className="chat__item__content">
                       <span className="name" >{item.userId.userName}</span>
-                      <span className="date" >{item.createdAt}</span>
+                      <span className="date" >{moment(item.createdAt).format("LTS")}</span>
                       <div className="chat__msg" >{item.message}</div>
                     </div>
                     <div className="chat__meta">
@@ -63,11 +64,17 @@ const ChatBody = (props) => {
         if (response.status === 200 && response.data.success) {
           setMessage(response.data.data.message);
           console.log(response, "deliverd");
+          setMessage("");
+          
         }
       })
+      
+      
       .catch((error) => {
         console.log(error);
       });
+      
+      
    
   };
 

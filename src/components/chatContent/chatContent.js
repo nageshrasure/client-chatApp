@@ -2,8 +2,6 @@ import React from "react";
 import ReactScrollToBottom from "react-scroll-to-bottom";
 import "./chatContent.css";
 
- 
-
 const ChatContent = ({
   setMessage,
   sendMessage,
@@ -13,13 +11,15 @@ const ChatContent = ({
   setHistoryOfMessages,
   name,
 }) => {
+  
+   
   return (
     <div className="main__chatcontent">
       <div className="content__header">
         <div className="blocks">
           <div className="current-chatting-user">
             <h3>{room}</h3>
-
+            
           </div>
         </div>
       </div>

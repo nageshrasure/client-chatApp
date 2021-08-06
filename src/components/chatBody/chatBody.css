@@ -10,7 +10,7 @@
   color: black;
   z-index: 99;
   position: relative;
-  left: 150px;
+ float: right;
   top: 30px;
 }
 .name {

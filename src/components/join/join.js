@@ -52,7 +52,7 @@ class Join extends Component {
       await axios
         .post("https://chat-uber.herokuapp.com/rooms/enterroom", {
           userName: this.state.userName,
-          roomId: this.state.room,
+          roomId: this.state.id,
         })
         .then((response) => {
           if (response.status === 200 && response.data.success) {
